@@ -55,7 +55,9 @@ final class PageViewPing
 
         $url = wp_json_encode(rest_url(self::NAMESPACE.self::ROUTE));
 
-        echo "<script>(function(u){try{if(navigator.sendBeacon){navigator.sendBeacon(u)}else{fetch(u,{method:'POST',keepalive:true,credentials:'omit'})}}catch(e){}})({$url});</script>\n";
+        // Optimisers that delay scripts until the visitor interacts would drop every page view without one:
+        // LiteSpeed Cache honours data-no-optimize/data-no-defer, WP Rocket nowprocket, Cloudflare Rocket Loader data-cfasync.
+        echo "<script data-no-optimize=\"1\" data-no-defer=\"1\" data-cfasync=\"false\" nowprocket>(function(u){try{if(navigator.sendBeacon){navigator.sendBeacon(u)}else{fetch(u,{method:'POST',keepalive:true,credentials:'omit'})}}catch(e){}})({$url});</script>\n";
     }
 
     private function looksHuman(string $userAgent): bool

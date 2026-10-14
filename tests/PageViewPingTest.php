@@ -46,6 +46,7 @@ final class PageViewPingTest extends TestCase
         $html = get_echo([new PageViewPing($this->plugin()), 'printScript']);
 
         $this->assertStringContainsString('navigator.sendBeacon', $html);
+        $this->assertStringContainsString('data-no-optimize="1" data-no-defer="1"', $html, 'Page optimisers must not delay the ping.');
         $this->assertStringContainsString('survelium\/v1\/hit', $html);
     }
 
