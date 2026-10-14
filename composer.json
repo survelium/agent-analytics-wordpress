@@ -1,0 +1,61 @@
+{
+    "name": "survelium/agent-analytics-wordpress",
+    "description": "WordPress plugin for Survelium agent analytics: report AI crawlers and AI-referred visitors server-side.",
+    "type": "wordpress-plugin",
+    "keywords": [
+        "survelium",
+        "wordpress",
+        "ai-crawlers",
+        "gptbot",
+        "analytics"
+    ],
+    "homepage": "https://github.com/survelium/agent-analytics-wordpress",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Catalin Prodan",
+            "email": "catalin.prodan@newpixel.ro",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "survelium/agent-analytics-php": "^0.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "roots/wordpress-no-content": "^6.6",
+        "wp-phpunit/wp-phpunit": "^6.6",
+        "yoast/phpunit-polyfills": "^2.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/survelium/agent-analytics-php"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Survelium\\WordPressAgentAnalytics\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Survelium\\WordPressAgentAnalytics\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.1.0"
+        },
+        "allow-plugins": {
+            "roots/wordpress-core-installer": false
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
