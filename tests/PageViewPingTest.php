@@ -24,6 +24,7 @@ final class PageViewPingTest extends TestCase
         $this->ping(self::GPTBOT_UA);
         $this->ping('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
         $this->ping('Mozilla/5.0 HeadlessChrome/120.0');
+        $this->ping('python-requests/2.32.3');
         $this->ping('');
 
         $this->assertSame(0, $this->todayTotal());

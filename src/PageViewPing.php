@@ -2,6 +2,7 @@
 
 namespace Survelium\WordPressAgentAnalytics;
 
+use Survelium\AgentAnalytics\Signatures;
 use Throwable;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -16,9 +17,6 @@ final class PageViewPing
     public const NAMESPACE = 'survelium/v1';
 
     public const ROUTE = '/hit';
-
-    /** Headless browsers and crawlers that render JavaScript, AI ones are already counted server-side. */
-    private const NON_HUMAN = '/bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|monitor/i';
 
     public function __construct(private readonly Plugin $plugin) {}
 
@@ -60,12 +58,13 @@ final class PageViewPing
         echo "<script data-no-optimize=\"1\" data-no-defer=\"1\" data-cfasync=\"false\" nowprocket>(function(u){try{if(navigator.sendBeacon){navigator.sendBeacon(u)}else{fetch(u,{method:'POST',keepalive:true,credentials:'omit'})}}catch(e){}})({$url});</script>\n";
     }
 
+    /**
+     * Crawlers that render JavaScript (Googlebot, headless browsers) must not count: the total is people plus
+     * the AI crawlers, which are already counted server-side. Same rule as the server-side counting in the core.
+     */
     private function looksHuman(string $userAgent): bool
     {
-        if ($userAgent === '' || preg_match(self::NON_HUMAN, $userAgent)) {
-            return false;
-        }
-
-        return $this->plugin->analytics()->signatures()->matchBot($userAgent) === null;
+        return ! Signatures::looksAutomated($userAgent)
+            && $this->plugin->analytics()->signatures()->matchBot($userAgent) === null;
     }
 }
